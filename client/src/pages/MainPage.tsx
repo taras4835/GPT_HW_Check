@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect, useMemo } from 'react';
 import Typewriter from "../components/MainPage/Typewriter";
 import DescriptionAppear from "../components/MainPage/DescriptionAppear";
+import ResultView from '../components/MainPage/ResultViewComponent';
 import ky from 'ky';
 import locales from '../utils/locales/locales'
 import { useSelector, useDispatch } from 'react-redux';
@@ -33,7 +34,7 @@ function VibrateOnClick(){
 export default function Voyage() {
   const dispatch = useDispatch();
   const navigate = useNavigate()
-  const [mainScreenOn, setMainScreenOn] = useState(1)
+  const [screenState, setScreenState] = useState('main')
   const [specialOptionsMenuOn, setSpecialOptionsMenuOn] = useState(0)
 
   const [optionsTab, setOptionsTab] = useState(0)
@@ -130,6 +131,106 @@ export default function Voyage() {
 
     <div  className='main-screen'>
 
+      <div className='main-screen-section'>
+        {screenState == 'main'?
+          <div className='navigation-panel'>
+            <div className='header'>
+
+            <h1>SALAM AI</h1>
+
+            <h2>Проверка</h2>
+
+            </div>
+            <div className='bubble'>
+
+            </div>
+            
+              
+          </div>
+          :
+          <div className='main-header'  onClick={()=>setScreenState('main')}>
+            <div className='icon'><ArrowLeft/></div>
+            <div className='title'><p>Назад</p></div>
+          </div>
+        }
+        {screenState == 'main'?
+          <>
+            <div className='main-list-menu'>
+
+                <div className='accent-card clickable' onClick={()=>setScreenState('result')}>
+                    <div className='body'>
+                      
+                      <p className='inactive'>09 Апреля 2025</p>
+                      <p>задание 1</p>
+
+                    </div>
+                  
+                </div>
+              
+                <div className='accent-card clickable' onClick={()=>setScreenState('result')}>
+                    <div className='body'>
+                      
+                      <p className='inactive'>09 Апреля 2025</p>
+                      <p>задание 1</p>
+
+                    </div>
+                  
+                </div>
+
+                <div className='accent-card clickable' onClick={()=>setScreenState('result')}>
+                    <div className='body'>
+                      
+                      <p className='inactive'>09 Апреля 2025</p>
+                      <p>задание 1</p>
+
+                    </div>
+                  
+                </div>
+                <div className='accent-card clickable' onClick={()=>setScreenState('result')}>
+                    <div className='body'>
+                      
+                      <p className='inactive'>09 Апреля 2025</p>
+                      <p>задание 1</p>
+
+                    </div>
+                  
+                </div>
+                <div className='accent-card clickable' onClick={()=>setScreenState('result')}>
+                    <div className='body'>
+                      
+                      <p className='inactive'>09 Апреля 2025</p>
+                      <p>задание 1</p>
+
+                    </div>
+                  
+                </div>
+                <div className='accent-card clickable' onClick={()=>setScreenState('result')}>
+                    <div className='body'>
+                      
+                      <p className='inactive'>09 Апреля 2025</p>
+                      <p>задание 1</p>
+
+                    </div>
+                  
+                </div>
+                <div className='accent-card clickable' onClick={()=>setScreenState('result')}>
+                    <div className='body'>
+                      
+                      <p className='inactive'>09 Апреля 2025</p>
+                      <p>задание 1</p>
+
+                    </div>
+                  
+                </div>
+
+            </div>
+          
+          </>
+          : screenState == 'result'?
+                  <ResultView/>
+          :<></>
+        }
+      </div>
     </div>
 
 
