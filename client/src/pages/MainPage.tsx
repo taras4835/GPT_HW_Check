@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect, useMemo } from 'react';
 import Typewriter from "../components/MainPage/Typewriter";
 import DescriptionAppear from "../components/MainPage/DescriptionAppear";
 import ResultView from '../components/MainPage/ResultViewComponent';
+import NewTask from '../components/MainPage/NewTaskComponent';
 import ky from 'ky';
 import locales from '../utils/locales/locales'
 import { useSelector, useDispatch } from 'react-redux';
@@ -16,6 +17,7 @@ import {setUser} from '../slices/userSlice';
 import { ReactComponent as ArrowRight } from '../utils/icons/arrow-right.svg';  // Import as a React component
 import { ReactComponent as ArrowLeft } from '../utils/icons/arrow-left.svg';  // Import as a React component
 import { ReactComponent as ArrowSoutheast } from '../utils/icons/arrow-southeast.svg';  // Import as a React component
+import { ReactComponent as Plus } from '../utils/icons/plus.svg';  // Import as a React component
 
 const TIME_LIMIT = 10
 const API_BASE_URL = process.env.REACT_APP_BASE_URL;
@@ -131,31 +133,36 @@ export default function Voyage() {
 
     <div  className='main-screen'>
 
+
       <div className='main-screen-section'>
         {screenState == 'main'?
-          <div className='navigation-panel'>
-            <div className='header'>
-
-            <h1>SALAM AI</h1>
-
-            <h2>Проверка</h2>
-
+          <>
+            <div className='main-header display-none' >
+              <div className='title'><p>Peredel.ai</p></div>
             </div>
-            <div className='bubble'>
+          </>
 
-            </div>
-            
-              
-          </div>
-          :
+          : screenState == 'result'?
           <div className='main-header'  onClick={()=>setScreenState('main')}>
             <div className='icon'><ArrowLeft/></div>
-            <div className='title'><p>Назад</p></div>
+            <div className='title'><p>Результат проверки</p></div>
           </div>
+          : screenState == 'new_task'?
+          <div className='main-header'  onClick={()=>setScreenState('main')}>
+            <div className='icon'><ArrowLeft/></div>
+            <div className='title'><p>Новая проверка</p></div>
+          </div>
+          :<></>
         }
         {screenState == 'main'?
           <>
-            <div className='main-list-menu'>
+            <div className='main-list-menu appear-with-shift scroll-bar-hide'>
+                <div className='list-title'>
+                <h1>
+                PEREDEL.AI
+                </h1>
+                <h2>Проверенные работы</h2>
+                </div>
 
                 <div className='accent-card clickable' onClick={()=>setScreenState('result')}>
                     <div className='body'>
@@ -167,6 +174,25 @@ export default function Voyage() {
                   
                 </div>
               
+                <div className='accent-card clickable' onClick={()=>setScreenState('result')}>
+                    <div className='body'>
+                      
+                      <p className='inactive'>09 Апреля 2025</p>
+                      <p>задание 1</p>
+
+                    </div>
+                  
+                </div>
+
+                <div className='accent-card clickable' onClick={()=>setScreenState('result')}>
+                    <div className='body'>
+                      
+                      <p className='inactive'>09 Апреля 2025</p>
+                      <p>задание 1</p>
+
+                    </div>
+                  
+                </div>
                 <div className='accent-card clickable' onClick={()=>setScreenState('result')}>
                     <div className='body'>
                       
@@ -227,10 +253,28 @@ export default function Voyage() {
           
           </>
           : screenState == 'result'?
-                  <ResultView/>
-          :<></>
+            <ResultView/>
+          : screenState== 'new_task'?
+            <NewTask/>
+          :
+          <></>
         }
       </div>
+
+      {
+        screenState == 'main'?
+        <>
+                    <div className='navigation-panel'>
+              <div className='primary-option' onClick={()=>setScreenState('new_task')}>
+                <h2 >Проверить <span className=''>работу</span> <ArrowRight  className='inline-svg' /></h2>
+
+              </div>
+              
+                
+            </div>
+        </>:
+        <></>
+      }
     </div>
 
 

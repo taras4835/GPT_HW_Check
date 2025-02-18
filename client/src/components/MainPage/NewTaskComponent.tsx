@@ -4,6 +4,8 @@ import ky from 'ky';
 import { ReactComponent as ArrowRight } from '../../utils/icons/arrow-right.svg';  // Import as a React component
 import { ReactComponent as ArrowLeft } from '../../utils/icons/arrow-left.svg';  // Import as a React component
 import { ReactComponent as ArrowSoutheast } from '../../utils/icons/arrow-southeast.svg';  // Import as a React component
+import { ReactComponent as ArrowNorth } from '../../utils/icons/arrow-down.svg';  // Import as a React component
+import { ReactComponent as Plus } from '../../utils/icons/plus.svg';  // Import as a React component
 
 const API_BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -11,7 +13,7 @@ interface ResultProps{
 
   }
 
-export default function ResultView ({}: ResultProps) {
+export default function NewTask ({}: ResultProps) {
   const dispatch = useDispatch();
   const urlParams = new URLSearchParams(window.location.search);
 
@@ -41,27 +43,25 @@ export default function ResultView ({}: ResultProps) {
 
   return <>
   
-  <div  className='drawer-screen appear-with-shift-left'>
+  <div  className='drawer-screen'>
       <div className='main-list-menu'>
 
-
-      <div className='accent-card'>
-      <div className='body'>
-        
-      <p className='inactive'>09 Апреля 2025</p>
-      <p>Домашнее задание</p>
-      
-      </div>
-        
-      </div>
-
-      <div className='accent-card'>
-      <div className='header'>3214</div>
-      <div className='body'>Домашнее задание</div>
-        
+        <div className='new-task-help-message'>
+          <h1>Прикрепите фотографии на проверку и добавьте заметку</h1>
         </div>
+
+        
       </div>
-    </div>
+      <div className='text-input-panel appear-with-shift'>
+      <div className='text-input-field'></div>
+      <div className='icons-field'>
+        <div className='icon-plus'><h2><Plus className='inline-svg'/></h2></div>
+        <div className='icon-send'><h2><ArrowNorth className='inline-svg'/></h2></div>
+      </div>
+
+
+      </div>
+  </div>
 
   </>;
 };
