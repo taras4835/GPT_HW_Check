@@ -4,8 +4,8 @@
   --secondary-color:#333;
   --g2g-color: #3c14dc;
   --background-color: #fff;
-  --background-color-accent: #eee;
-  --background-color-accent-dark: #ddd;
+  --background-color-accent: #f0f0f0;
+  --background-color-accent-dark: #777;
   --background-color-transparent: #ffffffc0;
   -webkit-tap-highlight-color: transparent;
 
@@ -309,7 +309,23 @@ h1,
 }
 
 .appear-with-shift-left{
-  animation: appear-with-shift-left 0.4s ease-in-out;
+  animation: appear-with-shift-left 0.3s ease-in-out;
+
+}
+
+@keyframes appear-with-shift-right {
+  0% {
+    transform: translate(-100px, 0);
+    opacity: 0;
+  }
+  100% {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+.appear-with-shift-right{
+  animation: appear-with-shift-right 0.3s ease-in-out;
 
 }
 
@@ -492,7 +508,15 @@ h1,
 }
 
 .list-title{
-  padding-bottom: 30px;
+
+  background-color: var(--background-color-accent);
+  border-radius: var(--border-radius);
+  padding: var(--2);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  color: #000;
+  margin-bottom: 20px;
 }
 
 
@@ -505,6 +529,7 @@ h1,
   align-items: start;
   justify-content: start;
   width: 100%;
+  color: var(--background-color-accent-dark);
 }
 
 .main-header .icon{
@@ -545,7 +570,7 @@ h1,
 
   border-radius: var(--border-radius) var(--border-radius) 0 0;
   background-color: var(--background-color-accent-dark);
-  color: #000;
+  color: #fff;
   width: 100%;
   padding: var(--3);
 }
@@ -575,7 +600,6 @@ h1,
   z-index: 100;
   gap: var(--2);
   border-radius: var(--border-radius);
-  background-color: var(--background-color-accent-dark)
 }
 
 
@@ -595,6 +619,7 @@ h1,
   display: flex;
   flex-direction: column;
   background-color: var(--g2g-color);
+  background-color: #000;
   color: #fff;
   border-radius: var(--border-radius);
   cursor: pointer;
@@ -632,14 +657,15 @@ h1,
   min-height: 100px;
 }
 
-.text-input-panel .icons-field{
+.icons-field{
   width:100%;
   display: flex;
   justify-content: space-between;
   flex: none;
 }
-.text-input-panel .icons-field .icon-send,
-.text-input-panel .icons-field .icon-plus{
+
+.icons-field .icon-send,
+.icons-field .icon-plus{
   padding: var(--2);
   width: 50px;
   display: flex;
@@ -651,7 +677,7 @@ h1,
   flex: none;
 }
 
-.text-input-panel .icons-field .icon-send{
+.icons-field .icon-send{
   background-color: #ddd;
   border: none;
   rotate: 180deg;
@@ -660,7 +686,7 @@ h1,
 .new-task-help-message{
   margin-top: 60px;
   color: var(--background-color-accent-dark);
-  animation: opacity-appear 2s ease;
+  animation: opacity-appear 1s ease;
 }
 
 

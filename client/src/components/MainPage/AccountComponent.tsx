@@ -13,7 +13,7 @@ interface ResultProps{
 
   }
 
-export default function NewTask ({}: ResultProps) {
+export default function AccountComponent ({}: ResultProps) {
   const dispatch = useDispatch();
   const urlParams = new URLSearchParams(window.location.search);
 
@@ -47,19 +47,10 @@ export default function NewTask ({}: ResultProps) {
       <div className='main-list-menu'>
 
         <div className='new-task-help-message'>
-          <h1>Прикрепите фотографии на проверку и добавьте заметку</h1>
+          <h1>Тут будет кошелек и настройка аккаунта</h1>
         </div>
 
         
-      </div>
-      <div className='text-input-panel appear-with-shift'>
-      <div className='text-input-field'></div>
-      <div className='icons-field'>
-        <div className='icon-plus'><h2><Plus className='inline-svg'/></h2></div>
-        <div className='icon-send'><h2><ArrowNorth className='inline-svg'/></h2></div>
-      </div>
-
-
       </div>
   </div>
 

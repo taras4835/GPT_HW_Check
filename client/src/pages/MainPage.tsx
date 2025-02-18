@@ -3,6 +3,7 @@ import Typewriter from "../components/MainPage/Typewriter";
 import DescriptionAppear from "../components/MainPage/DescriptionAppear";
 import ResultView from '../components/MainPage/ResultViewComponent';
 import NewTask from '../components/MainPage/NewTaskComponent';
+import AccountComponent from '../components/MainPage/AccountComponent';
 import ky from 'ky';
 import locales from '../utils/locales/locales'
 import { useSelector, useDispatch } from 'react-redux';
@@ -152,17 +153,29 @@ export default function Voyage() {
             <div className='icon'><ArrowLeft/></div>
             <div className='title'><p>Новая проверка</p></div>
           </div>
+          :screenState == 'account_settings'?
+          <div className='main-header'  onClick={()=>setScreenState('main')}>
+            <div className='icon'><ArrowLeft/></div>
+            <div className='title'><p>Аккаунт</p></div>
+          </div>
           :<></>
         }
         {screenState == 'main'?
           <>
-            <div className='main-list-menu appear-with-shift scroll-bar-hide'>
-                <div className='list-title'>
-                <h1>
-                PEREDEL.AI
-                </h1>
-                <h2>Проверенные работы</h2>
+            <div className='main-list-menu appear-with-shift-right scroll-bar-hide'>
+                <div className='list-title' onClick={()=>setScreenState('account_settings')}>
+                    <div>
+                    <h1>
+                    RESH.AI
+                    </h1>
+                    <h2 className='icon-plus'>ПРОВЕРОК ДОСТУПНО: 23</h2>
+                    </div>
+
+                    <div className='icons-field'>
+                      <div className='icon-send'><h2><Plus className='inline-svg'/></h2></div>
+                    </div>
                 </div>
+                <h2 className='inactive'>Проверенные работы</h2>
 
                 <div className='accent-card clickable' onClick={()=>setScreenState('result')}>
                     <div className='body'>
@@ -256,6 +269,8 @@ export default function Voyage() {
             <ResultView/>
           : screenState== 'new_task'?
             <NewTask/>
+          : screenState== 'account_settings'?
+            <AccountComponent/>
           :
           <></>
         }
