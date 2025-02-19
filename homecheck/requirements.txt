@@ -17,4 +17,3 @@ pyTelegramBotAPI
 python-dotenv
 openai
 drf-yasg
-imghdr

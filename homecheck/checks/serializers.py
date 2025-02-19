@@ -1,10 +1,11 @@
 import base64
 import uuid
-import imghdr
 from django.core.files.base import ContentFile
 from rest_framework import serializers
 from checks.models import Check, Photo
 from checks.utils import get_gpt_response
+from io import BytesIO
+from PIL import Image
 
 
 class Base64ImageField(serializers.ImageField):
@@ -28,12 +29,15 @@ class Base64ImageField(serializers.ImageField):
         return super().to_internal_value(data)
 
     def get_file_extension(self, decoded_file):
-        extension = imghdr.what(None, decoded_file)
-        if extension == "jpeg":
-            extension = "jpg"
-        if extension is None:
-            extension = "jpg"  # Значение по умолчанию
-        return extension
+        try:
+            with BytesIO(decoded_file) as buffer:
+                image = Image.open(buffer)
+                extension = image.format.lower()
+                if extension == "jpeg":
+                    extension = "jpg"
+                return extension
+        except Exception:
+            return "jpg"  # Значение по умолчанию, если не удалось определить формат
 
 class PhotoSerializer(serializers.ModelSerializer):
     photo = Base64ImageField(max_length=None, use_url=True)
