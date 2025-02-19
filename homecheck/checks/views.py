@@ -26,3 +26,10 @@ class CheckModelViewSet(ModelViewSet):
         if self.action == 'list':
             return CheckListSerializer
         return CheckSerializer
+    
+    def get_serializer_context(self):
+        # Получаем стандартный контекст: request, view, format
+        context = super().get_serializer_context()
+        # Можно добавить любые дополнительные данные
+        context['user'] = self.request.user
+        return context

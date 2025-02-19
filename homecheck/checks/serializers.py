@@ -52,15 +52,20 @@ class CheckSerializer(serializers.ModelSerializer):
     class Meta:
         model = Check
         fields = ['id', 'user', 'created_at', 'updated_at', 'input_text', 'result', 'photos']
-        read_only_fields = ['result']
+        read_only_fields = ['result', 'user']
 
     def create(self, validated_data):
         # Извлекаем данные для фото (если есть)
         photos_data = validated_data.pop('photos', [])
-        check = Check.objects.create(**validated_data)
+
+        # Извлекаем пользователя из контекста запроса
+        request = self.context.get('request')
+        user = request.user if request else None
+
+        check = Check.objects.create(user=user, **validated_data)
 
         for photo_data in photos_data:
-            Photo.objects.create(check=check, **photo_data)
+            Photo.objects.create(hw_check=check, **photo_data)
 
         result = get_gpt_response(check, photos_data)
         check.result = result
@@ -71,6 +76,10 @@ class CheckSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         # Извлекаем данные для фото (если переданы)
         photos_data = validated_data.pop('photos', None)
+
+        # Исключаем попытку изменения пользователя, если он передан
+        validated_data.pop('user', None)
+
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
         instance.save()
