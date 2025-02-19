@@ -23,7 +23,7 @@ class Check(models.Model):
 
 
 class Photo(models.Model):
-    check = models.ForeignKey(Check, on_delete=models.CASCADE, related_name='photos')
+    hw_check = models.ForeignKey(Check, on_delete=models.CASCADE, related_name='photos')
     photo = models.ImageField(upload_to='photos/')
 
     def __str__(self):

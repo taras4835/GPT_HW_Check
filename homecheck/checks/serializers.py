@@ -5,6 +5,8 @@ from django.core.files.base import ContentFile
 from rest_framework import serializers
 from checks.models import Check, Photo
 from checks.utils import get_gpt_response
+
+
 class Base64ImageField(serializers.ImageField):
     """
     Сериализатор для поля изображения, которое передаётся в формате base64.
@@ -73,7 +75,7 @@ class CheckSerializer(serializers.ModelSerializer):
             # Опционально: удаляем старые фото и создаём новые
             instance.photos.all().delete()
             for photo_data in photos_data:
-                Photo.objects.create(check=instance, **photo_data)
+                Photo.objects.create(hw_check=instance, **photo_data)
         return instance
     
 
