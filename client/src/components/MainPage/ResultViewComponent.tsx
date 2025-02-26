@@ -6,6 +6,7 @@ import { ReactComponent as ArrowLeft } from '../../utils/icons/arrow-left.svg'; 
 import { ReactComponent as ArrowSoutheast } from '../../utils/icons/arrow-southeast.svg';  // Import as a React component
 import { ReactComponent as DropDownArrow } from '../../utils/icons/dropdown-arrow.svg';  // Import as a React component
 import { ReactComponent as Send } from '../../utils/icons/send.svg';  // Import as a React component
+import { ReactComponent as LogoStars } from '../../utils/icons/logo-stars.svg';  // Import as a React component
 
 const API_BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -17,9 +18,7 @@ export default function ResultView ({}: ResultProps) {
   const dispatch = useDispatch();
   const urlParams = new URLSearchParams(window.location.search);
 
-  const [currentText, setCurrentText] = useState('');
-  const [lastLetter, setLastLetter] = useState('');
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [enlargeTask, setEnlargeTask] = useState(0);
 
   // Typing logic goes here
   const hash_id = urlParams.get('hash_id');
@@ -48,16 +47,16 @@ export default function ResultView ({}: ResultProps) {
 
 
       <div className='task-card'>
-      <div className='body'>
+      <div className={enlargeTask ? 'body' : 'body shrinked'}>
         
       <p>Помоги мне разобраться с круговоротом воды в природе. Опиши основные этапы: испарение, конденсация и осадки. Укажи, какие факторы влияют на скорость испарения и образование облаков. Дополнительно расскажи, почему пресная вода так важна для жизни на Земле Помоги мне разобраться с круговоротом воды в природе. Опиши основные этапы: испарение, конденсация и осадки. Укажи, какие факторы влияют на скорость испарения и образование облаков. Дополнительно расскажи, почему пресная вода так важна для жизни на Земле</p>
-      
+      <div className={enlargeTask? 'enlarge-btn display-none': 'enlarge-btn'} onClick={() => setEnlargeTask(1)}>Развернуть <DropDownArrow className='inline-svg'/></div>
       </div>
         
       </div>
 
       <div className='task-card result'>
-      <div className='header'>Ответ <Send /></div>
+      <div className='header'>Ответ <LogoStars className='inline-svg-large'/></div>
       <div className='body'>
       Круговорот воды в природе — это «путешествие» воды по Земле.
 

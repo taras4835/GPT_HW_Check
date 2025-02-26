@@ -152,7 +152,7 @@ export default function Voyage() {
           :screenState == 'account_settings'?
           <div className='main-header'  onClick={()=>setScreenState('main')}>
             <div className='icon'><ArrowBack/></div>
-            <div className='title'><p>Аккаунт</p></div>
+            <div className='title'><p>Пополнить баланс</p></div>
           </div>
           :<></>
         }
