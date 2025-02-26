@@ -4,6 +4,8 @@ import ky from 'ky';
 import { ReactComponent as ArrowRight } from '../../utils/icons/arrow-right.svg';  // Import as a React component
 import { ReactComponent as ArrowLeft } from '../../utils/icons/arrow-left.svg';  // Import as a React component
 import { ReactComponent as ArrowSoutheast } from '../../utils/icons/arrow-southeast.svg';  // Import as a React component
+import { ReactComponent as DropDownArrow } from '../../utils/icons/dropdown-arrow.svg';  // Import as a React component
+import { ReactComponent as Send } from '../../utils/icons/send.svg';  // Import as a React component
 
 const API_BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -45,19 +47,34 @@ export default function ResultView ({}: ResultProps) {
       <div className='main-list-menu'>
 
 
-      <div className='accent-card'>
+      <div className='task-card'>
       <div className='body'>
         
-      <p className='inactive'>09 Апреля 2025</p>
-      <p>Домашнее задание</p>
+      <p>Помоги мне разобраться с круговоротом воды в природе. Опиши основные этапы: испарение, конденсация и осадки. Укажи, какие факторы влияют на скорость испарения и образование облаков. Дополнительно расскажи, почему пресная вода так важна для жизни на Земле Помоги мне разобраться с круговоротом воды в природе. Опиши основные этапы: испарение, конденсация и осадки. Укажи, какие факторы влияют на скорость испарения и образование облаков. Дополнительно расскажи, почему пресная вода так важна для жизни на Земле</p>
       
       </div>
         
       </div>
 
-      <div className='accent-card'>
-      <div className='header'>3214</div>
-      <div className='body'>Домашнее задание</div>
+      <div className='task-card result'>
+      <div className='header'>Ответ <Send /></div>
+      <div className='body'>
+      Круговорот воды в природе — это «путешествие» воды по Земле.
+
+Испарение — вода из морей, рек и озёр превращается в пар из-за тепла солнца и поднимается в небо.
+Конденсация — в небе водяной пар охлаждается и собирается в капельки, образуя облака.
+Осадки — когда в облаках слишком много воды, она падает на землю в виде дождя, снега или града.
+Что влияет на скорость испарения?
+
+Температура — чем теплее, тем быстрее испаряется вода.
+Ветер — он «сдувает» водяной пар, и новая вода испаряется быстрее.
+Влажность — когда воздух уже «насыщен» водой, испарение замедляется.
+Как образуются облака?
+Водяной пар поднимается, охлаждается и превращается в крошечные капли, которые «цепляются» за пылинки в воздухе.
+
+Почему пресная вода важна?
+Все живые существа (люди, животные, растения) нуждаются в воде. Пресная вода помогает нам пить, выращивать еду и поддерживать жизнь на планете. Без неё никто не сможет выжить.
+      </div>
         
         </div>
       </div>

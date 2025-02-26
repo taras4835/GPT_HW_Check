@@ -6,6 +6,10 @@ import { ReactComponent as ArrowLeft } from '../../utils/icons/arrow-left.svg'; 
 import { ReactComponent as ArrowSoutheast } from '../../utils/icons/arrow-southeast.svg';  // Import as a React component
 import { ReactComponent as ArrowNorth } from '../../utils/icons/arrow-down.svg';  // Import as a React component
 import { ReactComponent as Plus } from '../../utils/icons/plus.svg';  // Import as a React component
+import { ReactComponent as Attachment } from '../../utils/icons/attachment.svg';  // Import as a React component
+import { ReactComponent as ArrowBack } from '../../utils/icons/arrow-back.svg';  // Import as a React component
+import { ReactComponent as Send } from '../../utils/icons/send.svg';  // Import as a React component
+import { ReactComponent as Document } from '../../utils/icons/document.svg';  // Import as a React component
 
 const API_BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -47,16 +51,17 @@ export default function NewTask ({}: ResultProps) {
       <div className='main-list-menu'>
 
         <div className='new-task-help-message'>
-          <h1>Прикрепите фотографии на проверку и добавьте заметку</h1>
+          <Document />
+          <h2>Опишите задачу, добавьте снимки или документы</h2>
         </div>
 
         
       </div>
       <div className='text-input-panel appear-with-shift'>
-      <div className='text-input-field'></div>
+      <div className='text-input-field'>Описание задачи</div>
       <div className='icons-field'>
-        <div className='icon-plus'><h2><Plus className='inline-svg'/></h2></div>
-        <div className='icon-send'><h2><ArrowNorth className='inline-svg'/></h2></div>
+        <div className='icon-plus'><h2><Attachment className='inline-svg'/></h2></div>
+        <div className='icon-send'><h2><Send className='inline-svg'/></h2></div>
       </div>
 
 

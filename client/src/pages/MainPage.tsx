@@ -19,6 +19,9 @@ import { ReactComponent as ArrowRight } from '../utils/icons/arrow-right.svg';  
 import { ReactComponent as ArrowLeft } from '../utils/icons/arrow-left.svg';  // Import as a React component
 import { ReactComponent as ArrowSoutheast } from '../utils/icons/arrow-southeast.svg';  // Import as a React component
 import { ReactComponent as Plus } from '../utils/icons/plus.svg';  // Import as a React component
+import { ReactComponent as PlusNew } from '../utils/icons/plus-new.svg';  // Import as a React component
+import { ReactComponent as Logo } from '../utils/icons/logo.svg';  // Import as a React component
+import { ReactComponent as ArrowBack } from '../utils/icons/arrow-back.svg';  // Import as a React component
 
 const TIME_LIMIT = 10
 const API_BASE_URL = process.env.REACT_APP_BASE_URL;
@@ -136,26 +139,19 @@ export default function Voyage() {
 
 
       <div className='main-screen-section'>
-        {screenState == 'main'?
-          <>
-            <div className='main-header display-none' >
-              <div className='title'><p>Peredel.ai</p></div>
-            </div>
-          </>
-
-          : screenState == 'result'?
+      { screenState == 'result'?
           <div className='main-header'  onClick={()=>setScreenState('main')}>
-            <div className='icon'><ArrowLeft/></div>
+            <div className='icon'><ArrowBack/></div>
             <div className='title'><p>Результат проверки</p></div>
           </div>
           : screenState == 'new_task'?
           <div className='main-header'  onClick={()=>setScreenState('main')}>
-            <div className='icon'><ArrowLeft/></div>
+            <div className='icon'><ArrowBack/></div>
             <div className='title'><p>Новая проверка</p></div>
           </div>
           :screenState == 'account_settings'?
           <div className='main-header'  onClick={()=>setScreenState('main')}>
-            <div className='icon'><ArrowLeft/></div>
+            <div className='icon'><ArrowBack/></div>
             <div className='title'><p>Аккаунт</p></div>
           </div>
           :<></>
@@ -163,104 +159,110 @@ export default function Voyage() {
         {screenState == 'main'?
           <>
             <div className='main-list-menu appear-with-shift-right scroll-bar-hide'>
-                <div className='list-title' onClick={()=>setScreenState('account_settings')}>
-                    <div>
-                    <h1>
-                    RESH.AI
-                    </h1>
-                    <h2 className='icon-plus'>ПРОВЕРОК ДОСТУПНО: 23</h2>
+                <div className='list-title' >
+                    <div className='special-sign'>
+                      
+                        <Logo className=''/>
+
                     </div>
 
-                    <div className='icons-field'>
-                      <div className='icon-send'><h2><Plus className='inline-svg'/></h2></div>
+                    <div className='balance' onClick={()=>setScreenState('account_settings')}>
+                    <small className='inactive'>Баланс</small>
+                    <h2 className=''>12 <PlusNew className='inline-svg'/></h2>
+                    
                     </div>
                 </div>
-                <h2 className='inactive'>Проверенные работы</h2>
+                <div className='date-block'>
+                    <div className='date'>
+                      <h2>Сегодня</h2>
+                    </div>
 
-                <div className='accent-card clickable' onClick={()=>setScreenState('result')}>
-                    <div className='body'>
+                    <div className='task-card list-card clickable' onClick={()=>setScreenState('result')}>
+                        <div className='body'>
+                          
+                          <p>Найди площадь круга радиусом 4 см</p>
+
+                        </div>
                       
-                      <p className='inactive'>09 Апреля 2025</p>
-                      <p>задание 1</p>
-
                     </div>
                   
-                </div>
-              
-                <div className='accent-card clickable' onClick={()=>setScreenState('result')}>
-                    <div className='body'>
+                    <div className='task-card list-card clickable' onClick={()=>setScreenState('result')}>
+                        <div className='body'>
+                          
+                          <p>Помоги мне разобраться с круговоротом воды в природе. Опиши основные этапы: испарение, конденсация и осадки. Укажи, какие факторы влияют на скорость испарения и образование облаков. Дополнительно расскажи, почему пресная вода так важна для жизни на Земле</p>
+
+                        </div>
                       
-                      <p className='inactive'>09 Апреля 2025</p>
-                      <p>задание 1</p>
-
                     </div>
-                  
-                </div>
 
-                <div className='accent-card clickable' onClick={()=>setScreenState('result')}>
-                    <div className='body'>
+                    <div className='task-card list-card clickable' onClick={()=>setScreenState('result')}>
+                        <div className='body'>
+                          
+                          <p>задание 1</p>
+
+                        </div>
                       
-                      <p className='inactive'>09 Апреля 2025</p>
-                      <p>задание 1</p>
-
                     </div>
-                  
-                </div>
-                <div className='accent-card clickable' onClick={()=>setScreenState('result')}>
-                    <div className='body'>
+                    <div className='task-card list-card clickable' onClick={()=>setScreenState('result')}>
+                        <div className='body'>
+                          
+                          <p>задание 1</p>
+
+                        </div>
                       
-                      <p className='inactive'>09 Апреля 2025</p>
-                      <p>задание 1</p>
-
                     </div>
-                  
                 </div>
 
-                <div className='accent-card clickable' onClick={()=>setScreenState('result')}>
-                    <div className='body'>
+                <div className='date-block'>
+                    <div className='date'>
+                      <h2>Вчера</h2>
+                    </div>
+                    <div className='task-card list-card clickable' onClick={()=>setScreenState('result')}>
+                        <div className='body'>
+                          
+                          <p>задание 1</p>
+
+                        </div>
                       
-                      <p className='inactive'>09 Апреля 2025</p>
-                      <p>задание 1</p>
+                    </div> 
+                </div> 
+                <div className='date-block'>
+                  <div className='date'>
+                    <h2>15 Февраля</h2>
+                  </div>
+                  <div className='task-card list-card clickable' onClick={()=>setScreenState('result')}>
+                      <div className='body'>
+                        
+                        <p>задание 1</p>
 
-                    </div>
-                  
-                </div>
-                <div className='accent-card clickable' onClick={()=>setScreenState('result')}>
-                    <div className='body'>
-                      
-                      <p className='inactive'>09 Апреля 2025</p>
-                      <p>задание 1</p>
+                      </div>
+                    
+                  </div>
+                  <div className='task-card list-card clickable' onClick={()=>setScreenState('result')}>
+                      <div className='body'>
+                        
+                        <p>задание 1</p>
 
-                    </div>
-                  
-                </div>
-                <div className='accent-card clickable' onClick={()=>setScreenState('result')}>
-                    <div className='body'>
-                      
-                      <p className='inactive'>09 Апреля 2025</p>
-                      <p>задание 1</p>
+                      </div>
+                    
+                  </div>
+                  <div className='task-card list-card clickable' onClick={()=>setScreenState('result')}>
+                      <div className='body'>
+                        
+                        <p>задание 1</p>
 
-                    </div>
-                  
-                </div>
-                <div className='accent-card clickable' onClick={()=>setScreenState('result')}>
-                    <div className='body'>
-                      
-                      <p className='inactive'>09 Апреля 2025</p>
-                      <p>задание 1</p>
+                      </div>
+                    
+                  </div>
+                  <div className='task-card list-card clickable' onClick={()=>setScreenState('result')}>
+                      <div className='body'>
+                        
+                        <p>задание 1</p>
 
-                    </div>
-                  
-                </div>
-                <div className='accent-card clickable' onClick={()=>setScreenState('result')}>
-                    <div className='body'>
-                      
-                      <p className='inactive'>09 Апреля 2025</p>
-                      <p>задание 1</p>
-
-                    </div>
-                  
-                </div>
+                      </div>
+                    
+                  </div>
+                </div> 
 
             </div>
           
@@ -281,7 +283,7 @@ export default function Voyage() {
         <>
                     <div className='navigation-panel'>
               <div className='primary-option' onClick={()=>setScreenState('new_task')}>
-                <h2 >Проверить <span className=''>работу</span> <ArrowRight  className='inline-svg' /></h2>
+                <h3 >Загрузить работу</h3>
 
               </div>
               
