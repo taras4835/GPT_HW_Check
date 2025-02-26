@@ -10,6 +10,7 @@ import { ReactComponent as Attachment } from '../../utils/icons/attachment.svg';
 import { ReactComponent as Delete } from '../../utils/icons/delete.svg';  // Import as a React component
 import { ReactComponent as Send } from '../../utils/icons/send.svg';  // Import as a React component
 import { ReactComponent as Document } from '../../utils/icons/document.svg';  // Import as a React component
+import { ReactComponent as OpenDocument } from '../../utils/icons/open-document.svg';  // Import as a React component
 
 const API_BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -24,25 +25,38 @@ export default function NewTask ({}: ResultProps) {
   const [currentText, setCurrentText] = useState('');
   const [lastLetter, setLastLetter] = useState('');
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [waitingForResponse, setWaitingForResponse] = useState(0);
   const [message, setMessage] = useState("");
   const [attachments, setAttachments] = useState<{ name: string; base64: string }[]>([]);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (!event.target.files || event.target.files.length === 0) return; // ✅ Prevents error
+    if (!event.target.files || event.target.files.length === 0) return;
   
-    const files = Array.from(event.target.files); // ✅ Now safely iterable
+    const files = Array.from(event.target.files);
   
-    files.forEach((file) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onloadend = () => {
-        if (reader.result) {
-          setAttachments((prev) => [
-            ...prev,
-            { name: file.name, base64: reader.result as string },
-          ]);
-        }
-      };
+    setAttachments((prev) => {
+      if (prev.length >= 10) {
+        alert("You can only upload up to 10 attachments.");
+        return prev;
+      }
+  
+      const remainingSlots = 10 - prev.length; // How many more can be added
+      const filesToAdd = files.slice(0, remainingSlots); // Limit files
+  
+      filesToAdd.forEach((file) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onloadend = () => {
+          if (reader.result) {
+            setAttachments((prev) => [
+              ...prev,
+              { name: file.name, base64: reader.result as string },
+            ]);
+          }
+        };
+      });
+  
+      return prev; // Return the previous state (React requires this)
     });
   };
   
@@ -51,6 +65,7 @@ export default function NewTask ({}: ResultProps) {
   async function handleSubmit() {
     try {
       // Add hash_id to the fetch request URL
+      setWaitingForResponse(1)
       const requestUrl = `${API_BASE_URL}/players/get_result?hash_id=${1}`;
       const payload = {
         message,
@@ -76,12 +91,20 @@ export default function NewTask ({}: ResultProps) {
       <div className='main-list-menu'>
 
         <div className='new-task-help-message'>
-          <Document />
-          <h2>Опишите задачу, добавьте снимки или документы</h2>
+          {!waitingForResponse? 
+          <>
+                    <Document />
+                    <h2>Опишите задачу, добавьте снимки или документы</h2> 
+          </>: 
+          <>
+            <OpenDocument/>
+            <h2>Проверяем задание...</h2>
+          </>
+          }
         </div>
-
-        
+  
       </div>
+
       <div className='text-input-panel appear-with-shift'>
       <div className='text-input-field'>
       <textarea

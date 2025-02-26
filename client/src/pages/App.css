@@ -692,6 +692,8 @@ h1,
 .task-card.result{
   border:2px solid var(--highlight-color);
   padding-top: 30px;
+  box-shadow: 3px 4px 144px 0px #054DEA26;
+
 }
 
 .task-card .header{
