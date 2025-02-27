@@ -17,3 +17,4 @@ pyTelegramBotAPI
 python-dotenv
 openai
 drf-yasg
+django-cors-headers
