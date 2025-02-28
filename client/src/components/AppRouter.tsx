@@ -47,8 +47,8 @@ function AppRouter(): React.ReactElement {
             // Headers required for the request
             const headers = {
               "Accept": "application/json",
-              "telegram-id": window.Telegram?.WebApp?.initDataUnsafe?.user?.id || "", // Adjust if Telegram ID is stored differently
-              "telegram-data": window.Telegram?.WebApp?.initData || "", // Adjust if Telegram data is structured differently
+              "telegram-id": window.Telegram?.WebApp?.initDataUnsafe?.user?.id || "1", // Adjust if Telegram ID is stored differently
+              "telegram-data": window.Telegram?.WebApp?.initData || "2", // Adjust if Telegram data is structured differently
             };
 
 
@@ -58,7 +58,6 @@ function AppRouter(): React.ReactElement {
             // Fetch user data
             const result: any = await ky.get(requestUrl, {
               headers,
-              credentials: "include", // If authentication is needed
             }).json();
 
             console.log("User info:", result);
