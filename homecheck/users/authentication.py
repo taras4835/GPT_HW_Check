@@ -27,7 +27,7 @@ class TelegramAuthentication(BaseAuthentication):
 
         # Можно дополнительно сравнить данные из telegram_data и данные пользователя из базы
 
-        return (user, None)
+        return user
 
     def validate(self, init_data: str, token: str, c_str="WebAppData") -> dict | None:
         """
