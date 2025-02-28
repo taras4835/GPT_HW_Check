@@ -9,6 +9,22 @@ import { RootState } from "../store/store";
 import { setUser } from '../slices/userSlice';
 import {User} from '../models/types'
 
+declare global {
+  interface Window {
+    Telegram: {
+      WebApp: {
+        initData: string;
+        initDataUnsafe: {
+          user?: {
+            id?: string;
+          };
+        };
+      };
+    };
+  }
+}
+
+
 function AppRouter(): React.ReactElement {
     const user = useSelector((state:RootState)=> state.user)
     let userId = user.id;
@@ -17,7 +33,7 @@ function AppRouter(): React.ReactElement {
     const navigate = useNavigate();
 
 
-    const API_BASE_URL = process.env.REACT_APP_BASE_URL;
+    const API_BASE_URL = 'https://poreshai-xax5k.ondigitalocean.app/api'//process.env.REACT_APP_BASE_URL;
 
 
 
@@ -27,12 +43,27 @@ function AppRouter(): React.ReactElement {
             // Extract the hash_id from the URL query parameters
             const urlParams = new URLSearchParams(window.location.search);
             const hash_id = urlParams.get('hash_id');
-            if(hash_id){
-              // Add hash_id to the fetch request URL
-              const requestUrl = `${API_BASE_URL}/some_path/some_hand?hash_id=${hash_id}`;
-              const result :any  = await ky.get(requestUrl, { credentials: 'include' }).json();
-              dispatch(setUser(result));
-            }
+
+            // Headers required for the request
+            const headers = {
+              "Accept": "application/json",
+              "X-CSRFTOKEN": "", // Make sure this token is valid
+              "telegram_id": window.Telegram?.WebApp?.initDataUnsafe?.user?.id || "", // Adjust if Telegram ID is stored differently
+              "telegram_data": window.Telegram?.WebApp?.initData || "", // Adjust if Telegram data is structured differently
+            };
+
+
+            // Construct request URL
+            const requestUrl = `${API_BASE_URL}/users/users/`;
+
+            // Fetch user data
+            const result: any = await ky.get(requestUrl, {
+              headers,
+              credentials: "include", // If authentication is needed
+            }).json();
+
+            console.log("User info:", result);
+            dispatch(setUser(result));
           } catch (error) {
             console.error('Could not fetch user:', error);
           } finally {
