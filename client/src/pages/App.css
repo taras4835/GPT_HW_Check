@@ -590,6 +590,7 @@ h1,
 .list-title .balance{
   display: flex;
   flex-direction: column;
+  cursor: pointer;
 }
 
 .list-title .balance .plus{

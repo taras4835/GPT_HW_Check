@@ -12,7 +12,7 @@ import { ReactComponent as Send } from '../../utils/icons/send.svg';  // Import 
 import { ReactComponent as Document } from '../../utils/icons/document.svg';  // Import as a React component
 import { ReactComponent as OpenDocument } from '../../utils/icons/open-document.svg';  // Import as a React component
 
-const API_BASE_URL = process.env.REACT_APP_BASE_URL;
+const API_BASE_URL = 'https://poreshai-xax5k.ondigitalocean.app/api'//process.env.REACT_APP_BASE_URL;
 
 interface ResultProps{
 
@@ -27,7 +27,7 @@ export default function NewTask ({}: ResultProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [waitingForResponse, setWaitingForResponse] = useState(0);
   const [message, setMessage] = useState("");
-  const [attachments, setAttachments] = useState<{ name: string; base64: string }[]>([]);
+  const [attachments, setAttachments] = useState<{ photo: string }[]>([]);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files || event.target.files.length === 0) return;
@@ -50,7 +50,7 @@ export default function NewTask ({}: ResultProps) {
           if (reader.result) {
             setAttachments((prev) => [
               ...prev,
-              { name: file.name, base64: reader.result as string },
+              {"photo": reader.result as string },
             ]);
           }
         };
@@ -66,17 +66,29 @@ export default function NewTask ({}: ResultProps) {
     try {
       // Add hash_id to the fetch request URL
       setWaitingForResponse(1)
-      const requestUrl = `${API_BASE_URL}/players/get_result?hash_id=${1}`;
       const payload = {
-        message,
-        attachments, // array of { name, base64 }
+        input_text: message,
+        //        photos: attachments, // ✅ attachments уже в нужном формате
+        photos: attachments.map((file) => ({ photo: file.photo })), // 👈 Убеждаемся, что у каждого объекта есть "photo"
+        user: '1'
       };
+
       console.log("Sending JSON:", payload);
 
-      const result = await ky.post(requestUrl, { credentials: 'include', body: JSON.stringify(payload)}).json();
+      // Headers required for the request
+      const headers = {
+        "Accept": "application/json",
+        "Content-Type": "application/json", // 👈 Добавьте это
+        "telegram-id": window.Telegram?.WebApp?.initDataUnsafe?.user?.id || "1", // Adjust if Telegram ID is stored differently
+        "telegram-data": window.Telegram?.WebApp?.initData || "2", // Adjust if Telegram data is structured differently
+      };
+      const requestUrl = `${API_BASE_URL}/checks/checks/`;
 
-      setMessage("");
-      setAttachments([]);
+
+      const result = await ky.post(requestUrl, {headers,  body: JSON.stringify(payload)}).json();
+      console.log('result', result)
+      //setMessage("");
+      //setAttachments([]);
       //dispatch(setResultView(result));
     } catch (error) {
       console.error('Could not fetch user:', error);
@@ -120,7 +132,7 @@ export default function NewTask ({}: ResultProps) {
           <div className="attachment-list">
             {attachments.map((file, index) => (
               <div key={index} className="attachment">
-                <img src={file.base64} alt={file.name} className="attachment-image" />
+                <img src={file.photo} alt={'img'} className="attachment-image" />
                       
                   <button
                     className="delete-btn"
