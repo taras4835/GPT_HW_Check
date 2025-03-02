@@ -46,7 +46,6 @@ function AppRouter(): React.ReactElement {
             // Headers required for the request
             const headers = {
               "Accept": "application/json",
-              "X-CSRFTOKEN": "XPU4qF6Hap6LESpYVFg21NZTTRUgTDbdi8Jvw1n9UL9HIdHB5yQFUKSjpBHbAwAZ", // Make sure this token is valid
               "telegram-id": window.Telegram?.WebApp?.initDataUnsafe?.user?.id || "1", // Adjust if Telegram ID is stored differently
               "telegram-data": window.Telegram?.WebApp?.initData || "2", // Adjust if Telegram data is structured differently
             };
