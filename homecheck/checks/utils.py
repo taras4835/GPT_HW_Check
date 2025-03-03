@@ -12,7 +12,7 @@ def get_gpt_response(check, photos_data):
         {
             "type": "image_url",
             "image_url": {
-                "url": photo.photo
+                "url": photo['photo']
             }
         } for photo in photos_data
     ]
