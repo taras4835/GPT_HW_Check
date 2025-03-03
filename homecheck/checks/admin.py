@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.utils.html import format_html
-from .models import Check
+from .models import Check, Photo
 
 @admin.register(Check)
 class CheckAdmin(admin.ModelAdmin):
@@ -37,3 +37,5 @@ class CheckAdmin(admin.ModelAdmin):
             'fields': ('photos', 'display_photos_detail')
         }),
     )
+
+admin.site.register(Photo)
