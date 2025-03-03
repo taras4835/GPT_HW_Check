@@ -57,6 +57,7 @@ class CheckSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         # Извлекаем данные для фото (если есть)
         photos_data = validated_data.pop('photos', [])
+        print("photos_data", photos_data)
 
         # Извлекаем пользователя из контекста запроса
         request = self.context.get('request')
@@ -64,10 +65,11 @@ class CheckSerializer(serializers.ModelSerializer):
 
         check = Check.objects.create(user=user, **validated_data)
 
+        new_photos_data = []
         for photo_data in photos_data:
-            Photo.objects.create(hw_check=check, **photo_data)
+            new_photos_data.append(Photo.objects.create(hw_check=check, **photo_data))
 
-        result = get_gpt_response(check, photos_data)
+        result = get_gpt_response(check, new_photos_data)
         check.result = result
         check.save()
 

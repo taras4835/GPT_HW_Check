@@ -6,8 +6,10 @@ from django.core.files.base import ContentFile
 def get_base64_from_content_file(content_file):
     # Читаем содержимое файла
     content = content_file.read()
+    print("content", content)
     # Кодируем в base64
     base64_content = base64.b64encode(content).decode('utf-8')
+    print("base64_content", base64_content)
     # Добавляем префикс data URL в зависимости от типа файла
     mime_type = "image/jpeg"  # Можно добавить определение mime-type если нужно
     return f"data:{mime_type};base64,{base64_content}"
@@ -17,19 +19,16 @@ def get_gpt_response(check, photos_data):
     prompt = f"""
     You are school teacher. You are given a description of work and photos.
     You need to check the work and provide a detailed report.
+
+    Description:
+    {check.input_text}
+
     """
     
     images = []
     for photo in photos_data:
-        photo_content = photo['photo']
-        if isinstance(photo_content, ContentFile):
-            # Если это ContentFile, преобразуем в base64
-            image_url = get_base64_from_content_file(photo_content)
-        else:
-            # Если это уже URL или строка, используем как есть
-            image_url = photo_content
-        
-        print(image_url)
+        image_url = photo.photo.url
+        print("image_url", image_url)
         images.append({
             "type": "image_url",
             "image_url": {
