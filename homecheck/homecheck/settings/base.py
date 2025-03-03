@@ -28,7 +28,7 @@ INSTALLED_APPS = [
     'users',
     'bot',
     'checks',
-
+    'fintech'
 ]
 
 # Middleware
