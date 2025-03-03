@@ -27,4 +27,4 @@ class Photo(models.Model):
     photo = models.ImageField(upload_to='photos/')
 
     def __str__(self):
-        return f"Photo for Check {self.check.id}"
+        return f"Photo for Check {self.hw_check.id}"
