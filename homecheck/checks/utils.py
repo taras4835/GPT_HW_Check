@@ -18,7 +18,7 @@ def get_gpt_response(check, photos_data):
     client = OpenAI(api_key=settings.OPENAI_API_KEY)
     prompt = f"""
     You are school teacher. You are given a description of work and photos.
-    You need to check the work and provide a detailed report.
+    You need to check the work and provide a detailed report. Answer in russian.
 
     Description:
     {check.input_text}
