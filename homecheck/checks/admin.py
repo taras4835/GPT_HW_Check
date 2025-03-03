@@ -31,7 +31,7 @@ class CheckAdmin(admin.ModelAdmin):
 
     fieldsets = (
         ('Основная информация', {
-            'fields': ('user', 'created_at')
+            'fields': ('user',)
         }),
         ('Фотографии', {
             'fields': ('photos', 'display_photos_detail')
