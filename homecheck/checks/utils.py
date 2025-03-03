@@ -28,7 +28,8 @@ def get_gpt_response(check, photos_data):
         else:
             # Если это уже URL или строка, используем как есть
             image_url = photo_content
-            
+        
+        print(image_url)
         images.append({
             "type": "image_url",
             "image_url": {
