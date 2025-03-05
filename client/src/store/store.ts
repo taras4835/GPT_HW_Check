@@ -2,12 +2,14 @@
 import { configureStore } from "@reduxjs/toolkit";
 import userSlice from '../slices/userSlice'
 import selectedCheckSlice from '../slices/selectedCheck'
+import screenStateSlice from '../slices/screenState'
 
 const store = configureStore({
     reducer: {
 
         user: userSlice,
         selectedCheck: selectedCheckSlice,
+        screenState: screenStateSlice,
     },
 });
 

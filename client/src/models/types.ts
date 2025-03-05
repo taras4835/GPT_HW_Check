@@ -3,7 +3,8 @@
 
 export interface User{
     id:number;
-    name:string;
+    username:string;
+    balance: number;
 }
 export interface selectedCheck{
     id: number,

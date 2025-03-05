@@ -7,6 +7,7 @@ import { ReactComponent as ArrowSoutheast } from '../../utils/icons/arrow-southe
 import { ReactComponent as ArrowNorth } from '../../utils/icons/arrow-down.svg';  // Import as a React component
 import { ReactComponent as Plus } from '../../utils/icons/plus.svg';  // Import as a React component
 import { ReactComponent as Fire } from '../../utils/icons/fire.svg';  // Import as a React component
+import { RootState } from "../../store/store";
 
 const API_BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -17,25 +18,13 @@ interface ResultProps{
 export default function AccountComponent ({}: ResultProps) {
   const dispatch = useDispatch();
   const urlParams = new URLSearchParams(window.location.search);
+  const user = useSelector((state:RootState)=> state.user)
 
-  const [selectedPack, setSelectedPack] = useState(0);
+  const [selectedPack, setSelectedPack] = useState<any>(null);
   const [purchaseCreenOn, setPurchseScreenOn] = useState(0);
   // Typing logic goes here
   const hash_id = urlParams.get('hash_id');
   const [plans, setPlans] = useState([]);
-
-
-  async function fetchResult() {
-    try {
-      // Add hash_id to the fetch request URL
-      const requestUrl = `${API_BASE_URL}/players/get_result?hash_id=${1}`;
-
-      const result = await ky.get(requestUrl, { credentials: 'include' }).json();
-      //dispatch(setResultView(result));
-    } catch (error) {
-      console.error('Could not fetch user:', error);
-    }
-  };
 
   const fetchPlans = async () => {
     try {
@@ -59,7 +48,8 @@ export default function AccountComponent ({}: ResultProps) {
       }).json();
 
       console.log("Plans:", result);
-      setPlans(result)
+      const sorted_result : any = result.sort((a:any, b:any) => a?.price > b?.price ? 1 : -1)
+      setPlans(sorted_result)
 
       //dispatch(setUser(result));
     } catch (error) {
@@ -82,7 +72,7 @@ export default function AccountComponent ({}: ResultProps) {
       <div className='main-list-menu'>
         <div className='short-gap-block'>
           <p className='inactive'>Доступно проверок</p>
-          <h2>12</h2>
+          <h2>{user?.balance || 0}</h2>
         </div>
         <div className='tariff-list-block'>
           <h3>Купить проверки</h3>
@@ -93,11 +83,11 @@ export default function AccountComponent ({}: ResultProps) {
                 {
                   plans?.map((p :any, index)=>{
                     return(<>
-                    <div className={selectedPack == p?.id ? 'tariff selected': 'tariff'} onClick={()=>setSelectedPack(p?.id)}> 
-                      <div className='offer'>{p?.description}
+                    <div className={selectedPack?.id == p?.id ? 'tariff selected': 'tariff'} onClick={()=>setSelectedPack(p)}> 
+                      <div className='offer'>{p?.name}
                         {
-                          p?.sale_description?
-                          <small className='special-offer'>{p?.sale_description}<Fire className='inline-svg'/></small>
+                          p?.description?
+                          <small className='special-offer'>{p?.description}<Fire className='inline-svg'/></small>
                           :<></>
                         }
                         </div>
@@ -111,7 +101,7 @@ export default function AccountComponent ({}: ResultProps) {
               </>
               :<></>
             }
-            {/* 
+            {/*   
             <div className={selectedPack == 1 ? 'tariff selected': 'tariff'} onClick={()=>setSelectedPack(1)}> 
               <div className='offer'>5 проверок</div>
               <h3>150 ₽</h3>
@@ -139,12 +129,12 @@ export default function AccountComponent ({}: ResultProps) {
   </div>
 
   {
-        selectedPack != 0?
+        selectedPack?
         <>
           <div className='navigation-panel'>
             <div className='primary-option' onClick={()=>setPurchseScreenOn(1)}>
               <h3 >Купить</h3>
-              <small>25 проверок</small>
+              <small>{selectedPack?.name}</small>
             </div>
               
                 

@@ -673,7 +673,7 @@ h1,
 }
 
 
-.task-card .body.shrinked p::after{
+.task-card .body.shrinked::after{
   content: "";
   position: absolute;
   bottom:0;
@@ -683,11 +683,16 @@ h1,
   background: linear-gradient(transparent, var(--background-color-accent));
 }
 
-.task-card .body.shrinked p{
-  max-height: 150px;
+
+.task-card .body.shrinked{
+  max-height: 70px;
   overflow: hidden;
   position: relative;
   min-height: 40px;
+}
+
+.task-card .body.shrinked p{
+  position: relative;
 }
 
 .task-card.result{
@@ -790,6 +795,11 @@ h1,
   align-items: start;
   justify-content: center;
   gap: var(--2)
+}
+
+.text-input-panel.inactive-panel{
+  opacity: 0.5;
+  pointer-events: none;
 }
 
 .text-input-panel .text-input-field{

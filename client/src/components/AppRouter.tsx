@@ -61,7 +61,7 @@ function AppRouter(): React.ReactElement {
             }).json();
 
             console.log("User info:", result);
-            dispatch(setUser(result));
+            dispatch(setUser(result[0]));
           } catch (error) {
             console.error('Could not fetch user:', error);
           } finally {

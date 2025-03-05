@@ -15,6 +15,7 @@ import { format, parseISO, isToday, isYesterday } from "date-fns";
 import { ru } from "date-fns/locale";
 import {setUser} from '../slices/userSlice';
 import { setSelectedCheck } from '../slices/selectedCheck';
+import { setScreenState } from '../slices/screenState';
 
 import { ReactComponent as PlusNew } from '../utils/icons/plus-new.svg';  // Import as a React component
 import { ReactComponent as Logo } from '../utils/icons/logo.svg';  // Import as a React component
@@ -26,11 +27,11 @@ const API_BASE_URL = process.env.REACT_APP_BASE_URL;
 export default function MainPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate()
-  const [screenState, setScreenState] = useState('main')
   const [specialOptionsMenuOn, setSpecialOptionsMenuOn] = useState(0)
 
   const [optionsTab, setOptionsTab] = useState(0)
   const user = useSelector((state:RootState)=> state.user);
+  const screenState = useSelector((state:RootState)=> state.screenState);
   const selected_check = useSelector((state:RootState)=> state.selectedCheck);
   //const [counter, setCounter] = useState(TIME_LIMIT);
 
@@ -83,7 +84,7 @@ export default function MainPage() {
 
         // Fetch user data
 
-        setScreenState('result');
+        dispatch(setScreenState('result'));
         dispatch(setSelectedCheck({id:0, data:null}));
         const result: any = await ky.get(requestUrl, {
           headers,
@@ -142,7 +143,7 @@ export default function MainPage() {
     };
   
     fetchChecks();
-  }, [dispatch, navigate]);
+  }, [dispatch, navigate, screenState]);
 
 
 
@@ -198,17 +199,17 @@ export default function MainPage() {
 
       <div className='main-screen-section'>
       { screenState == 'result'?
-          <div className='main-header'  onClick={()=>setScreenState('main')}>
+          <div className='main-header'  onClick={()=>dispatch(setScreenState('main'))}>
             <div className='icon'><ArrowBack/></div>
             <div className='title'><p>Результат проверки</p></div>
           </div>
           : screenState == 'new_task'?
-          <div className='main-header'  onClick={()=>setScreenState('main')}>
+          <div className='main-header'  onClick={()=>dispatch(setScreenState('main'))}>
             <div className='icon'><ArrowBack/></div>
             <div className='title'><p>Новая проверка</p></div>
           </div>
           :screenState == 'account_settings'?
-          <div className='main-header'  onClick={()=>setScreenState('main')}>
+          <div className='main-header'  onClick={()=>dispatch(setScreenState('main'))}>
             <div className='icon'><ArrowBack/></div>
             <div className='title'><p>Пополнить баланс</p></div>
           </div>
@@ -224,9 +225,9 @@ export default function MainPage() {
 
                     </div>
 
-                    <div className='balance' onClick={()=>setScreenState('account_settings')}>
+                    <div className='balance' onClick={()=>dispatch(setScreenState('account_settings'))}>
                     <small className='inactive'>Баланс</small>
-                    <h2 className=''>12 <PlusNew className='inline-svg'/></h2>
+                    <h2 className=''>{user?.balance} <PlusNew className='inline-svg'/></h2>
                     
                     </div>
                 </div>
@@ -292,7 +293,7 @@ export default function MainPage() {
         screenState == 'main'?
         <>
                     <div className='navigation-panel'>
-              <div className='primary-option' onClick={()=>setScreenState('new_task')}>
+              <div className='primary-option' onClick={()=>dispatch(setScreenState('new_task'))}>
                 <h3 >Загрузить работу</h3>
 
               </div>

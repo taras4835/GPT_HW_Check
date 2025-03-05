@@ -34,7 +34,6 @@ const formatMathExpressions = (text: string) => {
   .replace(/\\\]/g, "$$") // Заменяем \] на $$
   .replace(/\\\(/g, "$")  // Заменяем \( на $
   .replace(/\\\)/g, "$"); // Заменяем \) на $
-    console.log(text, new_text)
   return new_text
 };
 
@@ -82,9 +81,16 @@ export default function ResultView ({}: ResultProps) {
         <div className={enlargeTask ? 'body' : 'body shrinked'}>
           
         <p>{selected_check?.data?.input_text}</p>
-        <div className={enlargeTask? 'enlarge-btn display-none': 'enlarge-btn'} onClick={() => setEnlargeTask(1)}>Развернуть <DropDownArrow className='inline-svg'/></div>
+        <div className="attachment-list">
+          {selected_check?.data?.photos.map((file:any , index: number) => (
+            <div key={index} className="attachment">
+              <img src={file.photo} alt={'img'} className="attachment-image" />
+            </div>
+          ))}
         </div>
-          
+        </div>
+        <div className={enlargeTask? 'enlarge-btn display-none': 'enlarge-btn'} onClick={() => setEnlargeTask(1)}>Развернуть <DropDownArrow className='inline-svg'/></div>
+
         </div>
 
         <div className='task-card result'>

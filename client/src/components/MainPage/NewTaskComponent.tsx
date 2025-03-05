@@ -11,6 +11,8 @@ import { ReactComponent as Delete } from '../../utils/icons/delete.svg';  // Imp
 import { ReactComponent as Send } from '../../utils/icons/send.svg';  // Import as a React component
 import { ReactComponent as Document } from '../../utils/icons/document.svg';  // Import as a React component
 import { ReactComponent as OpenDocument } from '../../utils/icons/open-document.svg';  // Import as a React component
+import { setSelectedCheck } from '../../slices/selectedCheck';
+import { setScreenState } from '../../slices/screenState';
 
 const API_BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -85,11 +87,12 @@ export default function NewTask ({}: ResultProps) {
       const requestUrl = `${API_BASE_URL}/checks/checks/`;
 
 
-      const result = await ky.post(requestUrl, {headers,  body: JSON.stringify(payload)}).json();
+      const result :any = await ky.post(requestUrl, {headers,  body: JSON.stringify(payload)}).json();
       console.log('result', result)
-      //setMessage("");
-      //setAttachments([]);
-      //dispatch(setResultView(result));
+
+      dispatch(setScreenState('result'));
+      dispatch(setSelectedCheck({id: result.id, data:result}));
+      
     } catch (error) {
       console.error('Could not fetch user:', error);
     }
@@ -117,7 +120,7 @@ export default function NewTask ({}: ResultProps) {
   
       </div>
 
-      <div className='text-input-panel appear-with-shift'>
+      <div className={!waitingForResponse? 'text-input-panel appear-with-shift' : 'text-input-panel appear-with-shift inactive-panel'}>
       <div className='text-input-field'>
       <textarea
             placeholder="Описание задачи"
