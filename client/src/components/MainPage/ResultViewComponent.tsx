@@ -7,6 +7,17 @@ import { ReactComponent as ArrowSoutheast } from '../../utils/icons/arrow-southe
 import { ReactComponent as DropDownArrow } from '../../utils/icons/dropdown-arrow.svg';  // Import as a React component
 import { ReactComponent as Send } from '../../utils/icons/send.svg';  // Import as a React component
 import { ReactComponent as LogoStars } from '../../utils/icons/logo-stars.svg';  // Import as a React component
+import { setSelectedCheck } from '../../slices/selectedCheck';
+import { RootState } from "../../store/store";
+import ReactMarkdown from "react-markdown";
+
+function Report({ selected_check }: { selected_check: any }) {
+  return (
+    <div className="prose max-w-none">
+      <ReactMarkdown>{selected_check?.data?.result || "Нет данных"}</ReactMarkdown>
+    </div>
+  );
+}
 
 const API_BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -17,6 +28,7 @@ interface ResultProps{
 export default function ResultView ({}: ResultProps) {
   const dispatch = useDispatch();
   const urlParams = new URLSearchParams(window.location.search);
+  const selected_check = useSelector((state:RootState)=> state.selectedCheck);
 
   const [enlargeTask, setEnlargeTask] = useState(0);
 
@@ -24,20 +36,7 @@ export default function ResultView ({}: ResultProps) {
   const hash_id = urlParams.get('hash_id');
 
 
-  async function fetchResult() {
-    try {
-      // Add hash_id to the fetch request URL
-      const requestUrl = `${API_BASE_URL}/players/get_result?hash_id=${1}`;
-
-      const result = await ky.get(requestUrl, { credentials: 'include' }).json();
-      //dispatch(setResultView(result));
-    } catch (error) {
-      console.error('Could not fetch user:', error);
-    }
-  };
-    useEffect(() => {
-      //fetchResult();
-    }, [dispatch]);
+  
   
 
   return <>
@@ -49,7 +48,7 @@ export default function ResultView ({}: ResultProps) {
       <div className='task-card'>
       <div className={enlargeTask ? 'body' : 'body shrinked'}>
         
-      <p>Помоги мне разобраться с круговоротом воды в природе. Опиши основные этапы: испарение, конденсация и осадки. Укажи, какие факторы влияют на скорость испарения и образование облаков. Дополнительно расскажи, почему пресная вода так важна для жизни на Земле Помоги мне разобраться с круговоротом воды в природе. Опиши основные этапы: испарение, конденсация и осадки. Укажи, какие факторы влияют на скорость испарения и образование облаков. Дополнительно расскажи, почему пресная вода так важна для жизни на Земле</p>
+      <p>{selected_check?.data?.input_text}</p>
       <div className={enlargeTask? 'enlarge-btn display-none': 'enlarge-btn'} onClick={() => setEnlargeTask(1)}>Развернуть <DropDownArrow className='inline-svg'/></div>
       </div>
         
@@ -58,6 +57,8 @@ export default function ResultView ({}: ResultProps) {
       <div className='task-card result'>
       <div className='header'>Ответ <LogoStars className='inline-svg-large'/></div>
       <div className='body'>
+        {Report({selected_check})}
+        {/* 
       Круговорот воды в природе — это «путешествие» воды по Земле.
 
 Испарение — вода из морей, рек и озёр превращается в пар из-за тепла солнца и поднимается в небо.
@@ -73,7 +74,8 @@ export default function ResultView ({}: ResultProps) {
 
 Почему пресная вода важна?
 Все живые существа (люди, животные, растения) нуждаются в воде. Пресная вода помогает нам пить, выращивать еду и поддерживать жизнь на планете. Без неё никто не сможет выжить.
-      </div>
+*/}      
+    </div>
         
         </div>
       </div>

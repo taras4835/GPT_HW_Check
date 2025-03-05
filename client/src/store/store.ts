@@ -1,11 +1,13 @@
 // store.ts
 import { configureStore } from "@reduxjs/toolkit";
 import userSlice from '../slices/userSlice'
+import selectedCheckSlice from '../slices/selectedCheck'
 
 const store = configureStore({
     reducer: {
 
         user: userSlice,
+        selectedCheck: selectedCheckSlice,
     },
 });
 

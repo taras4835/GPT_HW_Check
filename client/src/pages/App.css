@@ -687,14 +687,15 @@ h1,
   max-height: 150px;
   overflow: hidden;
   position: relative;
-
+  min-height: 40px;
 }
 
 .task-card.result{
   border:2px solid var(--highlight-color);
   padding-top: 30px;
   box-shadow: 3px 4px 144px 0px #054DEA26;
-
+  padding-left: 30px;
+  padding-bottom: 30px;
 }
 
 .task-card .header{

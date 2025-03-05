@@ -5,6 +5,10 @@ export interface User{
     id:number;
     name:string;
 }
+export interface selectedCheck{
+    id: number,
+    data: any,
+}
 
 export interface IForm{
     login:string;

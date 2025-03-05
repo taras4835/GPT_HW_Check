@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from "../store/store";
 import { setUser } from '../slices/userSlice';
 import {User} from '../models/types'
+const API_BASE_URL = process.env.REACT_APP_BASE_URL;
 
 declare global {
   interface Window {
@@ -31,9 +32,6 @@ function AppRouter(): React.ReactElement {
     const dispatch = useDispatch();
     const [isLoading, setIsLoading] = useState(true);
     const navigate = useNavigate();
-
-
-    const API_BASE_URL = 'https://poreshai-xax5k.ondigitalocean.app/api'//process.env.REACT_APP_BASE_URL;
 
 
 

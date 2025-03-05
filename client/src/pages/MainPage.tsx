@@ -10,34 +10,20 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from "../store/store";
 import './App.css'
 // import styles from "./About.module.css"
-import { DoubleSide } from 'three'
 import { useNavigate } from "react-router-dom";
-
+import { format, parseISO, isToday, isYesterday } from "date-fns";
+import { ru } from "date-fns/locale";
 import {setUser} from '../slices/userSlice';
+import { setSelectedCheck } from '../slices/selectedCheck';
 
-import { ReactComponent as ArrowRight } from '../utils/icons/arrow-right.svg';  // Import as a React component
-import { ReactComponent as ArrowLeft } from '../utils/icons/arrow-left.svg';  // Import as a React component
-import { ReactComponent as ArrowSoutheast } from '../utils/icons/arrow-southeast.svg';  // Import as a React component
-import { ReactComponent as Plus } from '../utils/icons/plus.svg';  // Import as a React component
 import { ReactComponent as PlusNew } from '../utils/icons/plus-new.svg';  // Import as a React component
 import { ReactComponent as Logo } from '../utils/icons/logo.svg';  // Import as a React component
 import { ReactComponent as ArrowBack } from '../utils/icons/arrow-back.svg';  // Import as a React component
 
-const TIME_LIMIT = 10
 const API_BASE_URL = process.env.REACT_APP_BASE_URL;
 
 
-function VibrateOnClick(){
-  // Check if vibration is supported by the browser
-  if (navigator.vibrate) {
-    navigator.vibrate(200);  // Vibrate for 200 milliseconds
-  } else {
-    console.log("Vibration API is not supported in this browser.");
-  }
-};
-
-
-export default function Voyage() {
+export default function MainPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate()
   const [screenState, setScreenState] = useState('main')
@@ -45,12 +31,14 @@ export default function Voyage() {
 
   const [optionsTab, setOptionsTab] = useState(0)
   const user = useSelector((state:RootState)=> state.user);
+  const selected_check = useSelector((state:RootState)=> state.selectedCheck);
   //const [counter, setCounter] = useState(TIME_LIMIT);
 
   //const actvie_event = useSelector((state:RootState)=> state.activeEvent);
   const urlParams = new URLSearchParams(window.location.search);
   const hash_id = urlParams.get('hash_id');
-
+  const [groupedChecks, setGroupedChecks] = useState<any>(null)
+  const [checks, setChecks] = useState<any[]>([]);
   useEffect(() => {
     //fetchUser();
   }, [dispatch]);
@@ -58,18 +46,101 @@ export default function Voyage() {
 
   let repair_count = 0
 
-  async function fetchUser() {
-    try {
-      // Add hash_id to the fetch request URL
-      const requestUrl = `${API_BASE_URL}/players/get_user?hash_id=${hash_id}`;
+  function groupByDate(checks: any[]) {
+    return checks.reduce((acc: Record<string, any[]>, check) => {
+      const date = parseISO(check.created_at);
+  
+      let groupLabel = format(date, "d MMMM", { locale: ru }); // "15 Февраля"
+  
+      if (isToday(date)) groupLabel = "Сегодня";
+      if (isYesterday(date)) groupLabel = "Вчера";
+  
+      if (!acc[groupLabel]) acc[groupLabel] = [];
+      acc[groupLabel].push(check);
+  
+      return acc;
+    }, {});
+  }
 
-      const result = await ky.get(requestUrl, { credentials: 'include' }).json();
-      dispatch(setUser(result));
-    } catch (error) {
-      console.error('Could not fetch user:', error);
-    }
-  };
+    const fetchCheck = async (selected_check_id : number) => {
+      try {
+        // Extract the hash_id from the URL query parameters
+        const urlParams = new URLSearchParams(window.location.search);
 
+        // Headers required for the request
+        const headers = {
+          "Accept": "application/json",
+          "telegram-id": window.Telegram?.WebApp?.initDataUnsafe?.user?.id || "1", // Adjust if Telegram ID is stored differently
+          "telegram-data": window.Telegram?.WebApp?.initData || "2", // Adjust if Telegram data is structured differently
+        };
+
+
+        // Construct request URL
+        const requestUrl = `${API_BASE_URL}/checks/checks/`+selected_check_id;
+
+
+        // Construct request URL
+
+        // Fetch user data
+        const result: any = await ky.get(requestUrl, {
+          headers,
+        }).json();
+
+        console.log("Selected check:", result);
+        await dispatch(setSelectedCheck({id:result.id, data:result}));
+        setScreenState('result');
+      } catch (error) {
+        console.error('Could not fetch user:', error);
+      } finally {
+        //setIsLoading(false);
+      }
+    };
+
+
+  useEffect(() => {
+    const fetchChecks = async () => {
+      try {
+        // Extract the hash_id from the URL query parameters
+        const urlParams = new URLSearchParams(window.location.search);
+
+        // Headers required for the request
+        const headers = {
+          "Accept": "application/json",
+          "telegram-id": window.Telegram?.WebApp?.initDataUnsafe?.user?.id || "1", // Adjust if Telegram ID is stored differently
+          "telegram-data": window.Telegram?.WebApp?.initData || "2", // Adjust if Telegram data is structured differently
+        };
+
+
+        // Construct request URL
+        const params = new URLSearchParams({ page_size: '100' });  
+        const requestUrl = `${API_BASE_URL}/checks/checks/?${params.toString()};`;
+
+
+        // Construct request URL
+
+        // Fetch user data
+        const result :any = await ky.get(requestUrl, {
+          headers
+          
+        }).json();
+
+        setChecks(result.results)
+        console.log("Checks:", result);
+
+        const tempGroupedChecks = groupByDate(result.results);
+        setGroupedChecks(tempGroupedChecks)
+        console.log("GroupedChecks:", tempGroupedChecks);
+
+        //dispatch(setUser(result));
+      } catch (error) {
+        console.error('Could not fetch user:', error);
+      } finally {
+        //setIsLoading(false);
+      }
+    };
+  
+    fetchChecks();
+  }, [dispatch, navigate]);
 
 
 
@@ -106,21 +177,6 @@ export default function Voyage() {
   }, [user, counter]);
   */
 
-  async function selectSpecialOption() {
-    try {
-
-      const requestUrl = `${API_BASE_URL}/some_path/?hash_id=${hash_id}`;
-      const result = await ky.put(requestUrl, { json: {option_id: 1},  credentials: 'include' }).json();
-      if(result){
-        fetchUser()
-      }
-      else{
-        console.log('error selectedOption', result)
-      }
-    } catch (error) {
-      console.error('Could not send command:', error);
-    }
-  };
 
   //const memoizedComponent = useMemo(() => {
   //  return <SomeComponent args={1}/>
@@ -172,97 +228,49 @@ export default function Voyage() {
                     
                     </div>
                 </div>
-                <div className='date-block'>
-                    <div className='date'>
-                      <h2>Сегодня</h2>
-                    </div>
-
-                    <div className='task-card list-card clickable' onClick={()=>setScreenState('result')}>
-                        <div className='body'>
-                          
-                          <p>Найди площадь круга радиусом 4 см</p>
-
-                        </div>
-                      
-                    </div>
+                {groupedChecks && checks? 
+                
+                <>
+                {Object.entries(groupedChecks)
+                .sort(([labelA], [labelB]) => {
+                  const dateA = labelA === "Сегодня" ? new Date() : labelA === "Вчера" ? new Date(Date.now() - 86400000) : parseISO(checks.find( (c: any)=> format(parseISO(c.created_at), "d MMMM", { locale: ru }) === labelA)?.created_at || "");
+                  const dateB = labelB === "Сегодня" ? new Date() : labelB === "Вчера" ? new Date(Date.now() - 86400000) : parseISO(checks.find( (c: any) => format(parseISO(c.created_at), "d MMMM", { locale: ru }) === labelB)?.created_at || "");
                   
-                    <div className='task-card list-card clickable' onClick={()=>setScreenState('result')}>
-                        <div className='body'>
-                          
-                          <p>Помоги мне разобраться с круговоротом воды в природе. Опиши основные этапы: испарение, конденсация и осадки. Укажи, какие факторы влияют на скорость испарения и образование облаков. Дополнительно расскажи, почему пресная вода так важна для жизни на Земле</p>
-
-                        </div>
-                      
-                    </div>
-
-                    <div className='task-card list-card clickable' onClick={()=>setScreenState('result')}>
-                        <div className='body'>
-                          
-                          <p>задание 1</p>
-
-                        </div>
-                      
-                    </div>
-                    <div className='task-card list-card clickable' onClick={()=>setScreenState('result')}>
-                        <div className='body'>
-                          
-                          <p>задание 1</p>
-
-                        </div>
-                      
-                    </div>
-                </div>
-
-                <div className='date-block'>
+                  return dateB.getTime() - dateA.getTime(); // Sort descending
+                })
+                .map(([dateLabel, items] : any) => (
+                  <div key={dateLabel} className='date-block'>
                     <div className='date'>
-                      <h2>Вчера</h2>
+                      <h2>{dateLabel}</h2>
+
                     </div>
-                    <div className='task-card list-card clickable' onClick={()=>setScreenState('result')}>
-                        <div className='body'>
-                          
-                          <p>задание 1</p>
-
-                        </div>
-                      
-                    </div> 
-                </div> 
-                <div className='date-block'>
-                  <div className='date'>
-                    <h2>15 Февраля</h2>
+                    <>
+                      {items.map((check : any) => (
+                        <div key={check.id} className='task-card list-card clickable' 
+                        onClick={()=>{
+                          fetchCheck(check.id); //check.id                      
+                        }}>
+                            <div className='body'>
+                              <p className="">{check.input_text || "..."}</p>
+                            </div>
+                        </div> 
+                      ))}
+                    </>
                   </div>
-                  <div className='task-card list-card clickable' onClick={()=>setScreenState('result')}>
-                      <div className='body'>
-                        
-                        <p>задание 1</p>
+                ))}
+                </>:
+                <div className='new-task-help-message'>
+                  <div>
+                  <br/>
+                  <br/>
+                  <br/>
+                  <h1>Здесь пока пусто</h1>
+                  <p>Загрузите работу для проверки</p>
+                </div>
+                </div>
+                
+                }
 
-                      </div>
-                    
-                  </div>
-                  <div className='task-card list-card clickable' onClick={()=>setScreenState('result')}>
-                      <div className='body'>
-                        
-                        <p>задание 1</p>
-
-                      </div>
-                    
-                  </div>
-                  <div className='task-card list-card clickable' onClick={()=>setScreenState('result')}>
-                      <div className='body'>
-                        
-                        <p>задание 1</p>
-
-                      </div>
-                    
-                  </div>
-                  <div className='task-card list-card clickable' onClick={()=>setScreenState('result')}>
-                      <div className='body'>
-                        
-                        <p>задание 1</p>
-
-                      </div>
-                    
-                  </div>
-                </div> 
 
             </div>
           
@@ -295,24 +303,6 @@ export default function Voyage() {
     </div>
 
 
-    <div className={true ? 'hud no-opacity display-none': 'hud no-opacity'}>
-
-        <div className={specialOptionsMenuOn? 'bottom-drawer open-voyage-hat': 'bottom-drawer hidden open-voyage-hat'}>
-
-              <div className="command-order-btns-row">
-                <div className="next-target-btn"  onClick={() => setSpecialOptionsMenuOn(0)}>ОТМЕНА</div>  
-                <div className="order-btn"  onClick={() => {selectSpecialOption(); setSpecialOptionsMenuOn(0)}}>ПОДТВЕРДИТЬ</div>
-              </div>       
-        </div>
-
-        <div className={optionsTab? 'bottom-drawer open-voyage-hat': 'bottom-drawer open-voyage-hat hidden'}>
-        {
-          <>
-          </>
-        }
-        </div>
-
-      </div>
       </>
 
     : 

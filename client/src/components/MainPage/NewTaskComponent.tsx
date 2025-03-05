@@ -12,7 +12,7 @@ import { ReactComponent as Send } from '../../utils/icons/send.svg';  // Import 
 import { ReactComponent as Document } from '../../utils/icons/document.svg';  // Import as a React component
 import { ReactComponent as OpenDocument } from '../../utils/icons/open-document.svg';  // Import as a React component
 
-const API_BASE_URL = 'https://poreshai-xax5k.ondigitalocean.app/api'//process.env.REACT_APP_BASE_URL;
+const API_BASE_URL = process.env.REACT_APP_BASE_URL;
 
 interface ResultProps{
 
@@ -68,8 +68,8 @@ export default function NewTask ({}: ResultProps) {
       setWaitingForResponse(1)
       const payload = {
         input_text: message,
-        //        photos: attachments, // ✅ attachments уже в нужном формате
-        photos: attachments.map((file) => ({ photo: file.photo })), // 👈 Убеждаемся, что у каждого объекта есть "photo"
+        //        photos: attachments, 
+        photos: attachments.map((file) => ({ photo: file.photo })), 
         user: '1'
       };
 
@@ -79,8 +79,8 @@ export default function NewTask ({}: ResultProps) {
       const headers = {
         "Accept": "application/json",
         "Content-Type": "application/json", // 👈 Добавьте это
-        "telegram-id": window.Telegram?.WebApp?.initDataUnsafe?.user?.id || "1", // Adjust if Telegram ID is stored differently
-        "telegram-data": window.Telegram?.WebApp?.initData || "2", // Adjust if Telegram data is structured differently
+        "telegram-id": window.Telegram?.WebApp?.initDataUnsafe?.user?.id || "1", 
+        "telegram-data": window.Telegram?.WebApp?.initData || "2", 
       };
       const requestUrl = `${API_BASE_URL}/checks/checks/`;
 
