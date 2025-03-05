@@ -47,7 +47,7 @@ def get_gpt_response(check, photos_data):
                 ],
             }
         ],
-        max_tokens=300,
+        max_tokens=3000,
     )
 
     return response.choices[0].message.content
