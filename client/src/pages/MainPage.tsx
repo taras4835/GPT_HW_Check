@@ -82,13 +82,15 @@ export default function MainPage() {
         // Construct request URL
 
         // Fetch user data
+
+        setScreenState('result');
+        dispatch(setSelectedCheck({id:0, data:null}));
         const result: any = await ky.get(requestUrl, {
           headers,
         }).json();
 
         console.log("Selected check:", result);
-        await dispatch(setSelectedCheck({id:result.id, data:result}));
-        setScreenState('result');
+        dispatch(setSelectedCheck({id:result.id, data:result}));
       } catch (error) {
         console.error('Could not fetch user:', error);
       } finally {
@@ -113,7 +115,7 @@ export default function MainPage() {
 
         // Construct request URL
         const params = new URLSearchParams({ page_size: '100' });  
-        const requestUrl = `${API_BASE_URL}/checks/checks/?${params.toString()};`;
+        const requestUrl = `${API_BASE_URL}/checks/checks/?${params.toString()}`;
 
 
         // Construct request URL

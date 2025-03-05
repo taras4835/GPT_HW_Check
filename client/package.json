@@ -20,6 +20,7 @@
     "date-fns": "^4.1.0",
     "dotenv": "^16.0.3",
     "jsonwebtoken": "^9.0.1",
+    "katex": "^0.16.21",
     "ky": "^0.33.2",
     "querystring-es3": "^0.2.1",
     "react": "^18.2.0",
@@ -27,10 +28,13 @@
     "react-device-detect": "^2.2.3",
     "react-dom": "^18.2.0",
     "react-indiana-drag-scroll": "^2.2.0",
+    "react-katex": "^3.0.1",
     "react-markdown": "^10.0.1",
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.9.0",
     "react-scripts": "5.0.1",
+    "rehype-katex": "^7.0.1",
+    "remark-math": "^6.0.0",
     "three": "^0.155.0",
     "three-spritetext": "^1.8.1",
     "typescript": "^5.2.2",
@@ -59,5 +63,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/react-katex": "^3.0.4"
   }
 }

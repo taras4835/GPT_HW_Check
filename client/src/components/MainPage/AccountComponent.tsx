@@ -22,6 +22,7 @@ export default function AccountComponent ({}: ResultProps) {
   const [purchaseCreenOn, setPurchseScreenOn] = useState(0);
   // Typing logic goes here
   const hash_id = urlParams.get('hash_id');
+  const [plans, setPlans] = useState([]);
 
 
   async function fetchResult() {
@@ -35,9 +36,44 @@ export default function AccountComponent ({}: ResultProps) {
       console.error('Could not fetch user:', error);
     }
   };
-    useEffect(() => {
-      //fetchResult();
-    }, [dispatch]);
+
+  const fetchPlans = async () => {
+    try {
+      // Extract the hash_id from the URL query parameters
+      const urlParams = new URLSearchParams(window.location.search);
+
+      // Headers required for the request
+      const headers = {
+        "Accept": "application/json",
+        "telegram-id": window.Telegram?.WebApp?.initDataUnsafe?.user?.id || "1", // Adjust if Telegram ID is stored differently
+        "telegram-data": window.Telegram?.WebApp?.initData || "2", // Adjust if Telegram data is structured differently
+      };
+
+
+      // Construct request URL
+      const requestUrl = `${API_BASE_URL}/fintech/plans/`;
+
+      const result :any = await ky.get(requestUrl, {
+        headers
+        
+      }).json();
+
+      console.log("Plans:", result);
+      setPlans(result)
+
+      //dispatch(setUser(result));
+    } catch (error) {
+      console.error('Could not fetch user:', error);
+    } finally {
+      //setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+
+    fetchPlans()
+  
+  }, [dispatch]);
   
 
   return <>
@@ -51,6 +87,31 @@ export default function AccountComponent ({}: ResultProps) {
         <div className='tariff-list-block'>
           <h3>Купить проверки</h3>
           <div className='tariff-list'>
+            {
+              plans && plans.length > 0 ?
+              <>
+                {
+                  plans?.map((p :any, index)=>{
+                    return(<>
+                    <div className={selectedPack == p?.id ? 'tariff selected': 'tariff'} onClick={()=>setSelectedPack(p?.id)}> 
+                      <div className='offer'>{p?.description}
+                        {
+                          p?.sale_description?
+                          <small className='special-offer'>{p?.sale_description}<Fire className='inline-svg'/></small>
+                          :<></>
+                        }
+                        </div>
+                      <h3>{p?.price} ₽</h3>
+                    </div>
+                    </>)
+                  }
+                    
+                  )
+                }
+              </>
+              :<></>
+            }
+            {/* 
             <div className={selectedPack == 1 ? 'tariff selected': 'tariff'} onClick={()=>setSelectedPack(1)}> 
               <div className='offer'>5 проверок</div>
               <h3>150 ₽</h3>
@@ -67,6 +128,8 @@ export default function AccountComponent ({}: ResultProps) {
               <div className='offer'>10 проверок</div>
               <h3>250 ₽</h3>
             </div>
+            */}
+
           </div>
         </div>
         <div className='account-comment'>
