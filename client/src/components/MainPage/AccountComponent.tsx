@@ -26,6 +26,35 @@ export default function AccountComponent ({}: ResultProps) {
   const hash_id = urlParams.get('hash_id');
   const [plans, setPlans] = useState([]);
 
+  const openPayment = async () => {
+
+
+      // Extract the hash_id from the URL query parameters
+      const urlParams = new URLSearchParams(window.location.search);
+
+      // Headers required for the request
+      const headers = {
+        "Accept": "application/json",
+        "telegram-id": window.Telegram?.WebApp?.initDataUnsafe?.user?.id || "1", // Adjust if Telegram ID is stored differently
+        "telegram-data": window.Telegram?.WebApp?.initData || "2", // Adjust if Telegram data is structured differently
+      };
+
+
+      // Construct request URL
+      const requestUrl = `${API_BASE_URL}/fintech/get_invoice`;
+
+      const result :any = await ky.get(requestUrl, {
+        headers
+      }).json();
+
+      console.log("Invoice url:", result);
+
+
+    if (result.invoice_url) {
+      (window.Telegram.WebApp as any).openLink(result.invoice_url);
+    }
+  };
+
   const fetchPlans = async () => {
     try {
       // Extract the hash_id from the URL query parameters
@@ -44,7 +73,7 @@ export default function AccountComponent ({}: ResultProps) {
 
       const result :any = await ky.get(requestUrl, {
         headers
-        
+
       }).json();
 
       console.log("Plans:", result);
@@ -65,6 +94,8 @@ export default function AccountComponent ({}: ResultProps) {
   
   }, [dispatch]);
   
+
+
 
   return <>
   
@@ -132,7 +163,7 @@ export default function AccountComponent ({}: ResultProps) {
         selectedPack?
         <>
           <div className='navigation-panel'>
-            <div className='primary-option' onClick={()=>setPurchseScreenOn(1)}>
+            <div className='primary-option' onClick={()=>openPayment()}>
               <h3 >Купить</h3>
               <small>{selectedPack?.name}</small>
             </div>
