@@ -536,6 +536,7 @@ h1,
 
 .tariff-list-block .tariff-list .tariff{
   display: flex;
+  position: relative;
   flex-direction: column;
   gap: var(--2);
   width: calc(50% - var(--1));
@@ -554,6 +555,9 @@ h1,
 }
 
 .special-offer{
+  position: absolute;
+  top: -6px;
+  right: -6px  ;
   display: inline-flex;
   flex-direction: row;
   gap: 2px;
