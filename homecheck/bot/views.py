@@ -7,7 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 from telebot.storage import StateRedisStorage
 from telebot import TeleBot
 
-bot = TeleBot(settings.TELEGRAM_TOKEN)
+bot = TeleBot(settings.BOT_TOKEN)
 
 @csrf_exempt
 def process_update(request):
@@ -19,7 +19,7 @@ def process_update(request):
         bot.send_message(update.message.chat.id, 'Привет! Я помогу проверить домашнее задание.',
                          reply_markup=types.InlineKeyboardMarkup(
                              inline_keyboard=[
-                                 [types.InlineKeyboardButton('🎮 Старт', web_app=types.WebAppInfo(url='https://hyperdive.app/telegram_app_login'))]
+                                 [types.InlineKeyboardButton('🎮 Старт', web_app=types.WebAppInfo(url=settings.WEB_APP_URL))]
                              ]
                          ),
                          parse_mode='Markdown')
