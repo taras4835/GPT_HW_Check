@@ -536,6 +536,7 @@ h1,
 
 .tariff-list-block .tariff-list .tariff{
   display: flex;
+  position: relative;
   flex-direction: column;
   gap: var(--2);
   width: calc(50% - var(--1));
@@ -554,6 +555,9 @@ h1,
 }
 
 .special-offer{
+  position: absolute;
+  top: -6px;
+  right: -6px  ;
   display: inline-flex;
   flex-direction: row;
   gap: 2px;
@@ -740,7 +744,7 @@ h1,
   width: calc(100% - 2*var(--2));
   z-index: 100;
   margin: var(--3);
-  margin-bottom: var(--4);
+  margin-bottom: 30px;
   z-index: 100;
   gap: var(--2);
   border-radius: var(--border-radius);
@@ -789,6 +793,7 @@ h1,
   right: var(--2);
   background-color: var(--background-color-accent);
   padding: var(--3);
+  bottom: 30px;
   border-radius: var(--border-radius);
   display: flex;
   flex-direction: column;

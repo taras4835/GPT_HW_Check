@@ -160,7 +160,7 @@ export default function NewTask ({}: ResultProps) {
                 className="display-none"
               />
         </label>
-        <div className='icon-send'><h2><Send className='inline-svg' onClick={() => handleSubmit()} /></h2></div>
+        <h2 className='icon-send'><><Send className='inline-svg' onClick={() => handleSubmit()} /></></h2>
       </div>
 
 

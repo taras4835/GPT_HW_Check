@@ -83,6 +83,7 @@ function AppRouter(): React.ReactElement {
 
     return (
         <>
+        {user?.id ?
             <Routes>
                 { publicRoutes.map(({ path, element }) => (
                         <Route path={path} element={element} key={Math.ceil(Math.random() * 99999)} />
@@ -90,6 +91,7 @@ function AppRouter(): React.ReactElement {
                 
                 <Route path='/main' element={<MainPage />} />
             </Routes>
+          :<></>}
         </>
     );
 }
