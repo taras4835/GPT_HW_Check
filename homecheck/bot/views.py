@@ -17,11 +17,9 @@ def process_update(request):
     # habdle start command
     if update.message.text == '/start':
         bot.send_message(update.message.chat.id, 'Привет! Я помогу проверить домашнее задание.',
-                         reply_markup=types.InlineKeyboardMarkup(
-                             inline_keyboard=[
-                                 [types.InlineKeyboardButton('🎮 Старт', web_app=types.WebAppInfo(url=settings.WEB_APP_URL))]
-                             ]
-                         ),
+                         reply_markup=types.InlineKeyboardMarkup([
+                             [types.InlineKeyboardButton('🎮 Старт', web_app=types.WebAppInfo(url=settings.WEB_APP_URL))]
+                         ]),
                          parse_mode='Markdown')
 
     return HttpResponse(status=200)
