@@ -292,12 +292,18 @@ export default function MainPage() {
       {
         screenState == 'main'?
         <>
-                    <div className='navigation-panel'>
+            <div className='navigation-panel'>
+            {user?.balance > 0?
               <div className='primary-option' onClick={()=>dispatch(setScreenState('new_task'))}>
                 <h3 >Загрузить работу</h3>
 
               </div>
-              
+            :  
+            <div className='primary-option' onClick={()=>dispatch(setScreenState('account_settings'))}>
+              <h3 >Пополнить баланс</h3>
+
+            </div>
+            } 
                 
             </div>
         </>:
