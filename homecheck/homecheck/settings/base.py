@@ -96,6 +96,8 @@ AUTH_USER_MODEL = 'users.User'
 
 TELEGRAM_BOT_WEBHOOK_URL = os.getenv('TELEGRAM_BOT_WEBHOOK_URL')
 BOT_TOKEN = os.getenv('BOT_TOKEN')
+WEB_APP_URL = os.getenv('WEB_APP_URL')
+
 APPEND_SLASH=False
 
 
