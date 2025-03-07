@@ -9,4 +9,4 @@ class BotConfig(AppConfig):
 
     def ready(self):
         bot = TeleBot(settings.BOT_TOKEN)
-        bot.set_webhook(url=settings.TELEGRAM_BOT_WEBHOOK_URL)
+        bot.set_webhook(url=f'{settings.TELEGRAM_BOT_WEBHOOK_URL.strip("/")}/api/bot/process')
