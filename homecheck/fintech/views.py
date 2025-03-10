@@ -16,7 +16,9 @@ class PlanViewSet(viewsets.ModelViewSet):
 def get_invoice(request):
     provider_token = settings.PROVIDER_TOKEN
     bot = TeleBot(settings.BOT_TOKEN)
-    response = bot.create_invoice_link("Покупка","Тестовый","true",provider_token,"rub",[types.LabeledPrice('Покупка',5 * 100)])
+    response = bot.create_invoice_link("Покупка",
+                                       "Тестовый",
+                                       "true",provider_token,"rub",[types.LabeledPrice('Покупка',500 * 100)])
     response = JsonResponse({"invoice_url": response.invoice_url})
     print(response)
     return response
