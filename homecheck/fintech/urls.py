@@ -9,5 +9,5 @@ router.register(r'plans', PlanViewSet)
 urlpatterns = router.urls
 
 urlpatterns += [
-    path('webhook/', get_invoice, name='get_invoice'),
+    path('get_invoice/', get_invoice, name='get_invoice'),
 ]
