@@ -19,6 +19,7 @@ def get_invoice(request):
     response = bot.create_invoice_link("Покупка",
                                        "Тестовый",
                                        "true",provider_token,"rub",[types.LabeledPrice('Покупка',500 * 100)])
-    response = JsonResponse({"invoice_url": response.invoice_url})
+    print(response)
+    response = JsonResponse({"invoice_url": response})
     print(response)
     return response
