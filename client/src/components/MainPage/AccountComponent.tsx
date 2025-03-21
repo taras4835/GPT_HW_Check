@@ -8,6 +8,7 @@ import { ReactComponent as ArrowNorth } from '../../utils/icons/arrow-down.svg';
 import { ReactComponent as Plus } from '../../utils/icons/plus.svg';  // Import as a React component
 import { ReactComponent as Fire } from '../../utils/icons/fire.svg';  // Import as a React component
 import { RootState } from "../../store/store";
+import { setScreenState } from '../../slices/screenState';
 
 const API_BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -26,7 +27,32 @@ export default function AccountComponent ({}: ResultProps) {
   const hash_id = urlParams.get('hash_id');
   const [plans, setPlans] = useState([]);
 
+
   const openPayment = async () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  urlParams.append("plan_id", selectedPack.id); // Добавляем тариф в параметры запроса
+
+
+  const headers = {
+    "Accept": "application/json",
+    "telegram-id": window.Telegram?.WebApp?.initDataUnsafe?.user?.id || "1",
+    "telegram-data": window.Telegram?.WebApp?.initData || "2",
+  };
+
+  //const requestUrl = `${API_BASE_URL}/fintech/get_invoice`;
+  const requestUrl = `${API_BASE_URL}/fintech/get_invoice?${urlParams.toString()}`;
+
+  const result: any = await ky.get(requestUrl, { headers }).json();
+
+  console.log("Invoice payload:", result);
+
+  if (result.payload) {
+    (window.Telegram.WebApp as any).openInvoice(result.payload); // Используем openInvoice
+  }
+  dispatch(setScreenState('main'))
+};
+
+  const openPayment_old = async () => {
 
 
       // Extract the hash_id from the URL query parameters
