@@ -50,9 +50,13 @@ export default function NewTask ({}: ResultProps) {
         reader.readAsDataURL(file);
         reader.onloadend = () => {
           if (reader.result) {
-            setAttachments((prev) => [
+            /*setAttachments((prev) => [
               ...prev,
               {"photo": reader.result as string },
+            ]);*/
+            setAttachments((prev) => [
+              ...prev,
+              { photo: `data:image/jpeg;base64,${reader.result?.toString().split(',')[1]}` },
             ]);
           }
         };
