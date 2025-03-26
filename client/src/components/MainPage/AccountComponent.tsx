@@ -28,6 +28,7 @@ export default function AccountComponent ({}: ResultProps) {
   const [plans, setPlans] = useState([]);
 
 
+
   const openPayment = async () => {
     const urlParams = new URLSearchParams(window.location.search);
     urlParams.append("plan_id", selectedPack.id); // Добавляем тариф в параметры запроса
@@ -41,42 +42,16 @@ export default function AccountComponent ({}: ResultProps) {
 
     //const requestUrl = `${API_BASE_URL}/fintech/get_invoice`;
     const requestUrl = `${API_BASE_URL}/fintech/get_invoice?${urlParams.toString()}`;
-    /*
+
     const result: any = await ky.get(requestUrl, { headers }).json();
 
     console.log("Invoice payload:", result);
 
     if (result.payload) {
-      (window.Telegram.WebApp as any).openInvoice(result.payload); // Используем openInvoice
+      await (window.Telegram.WebApp as any).openInvoice(result.payload); // Используем openInvoice
     }
-  */
-    try {
-      const result: any = await ky.get(requestUrl, { headers }).json();
-
-      console.log("Invoice payload:", result);
-
-      if (result.payload) {
-          (window.Telegram.WebApp as any).openInvoice(result.payload, (status: string) => {
-              console.log("Payment Status:", status);
-
-              if (status === "paid") {
-                  console.log("✅ Payment successful!");
-                  dispatch(setScreenState("main")); // Navigate to success screen
-              } else if (status === "cancelled") {
-                  console.log("❌ Payment was cancelled");
-                  dispatch(setScreenState("main")); // Navigate back to main screen
-              } else {
-                  console.log("⚠️ Payment status unknown:", status);
-              }
-          });
-      }
-  } catch (error) {
-      console.error("Error fetching invoice:", error);
-  }
-
-    
     dispatch(setScreenState('main'))
-  };
+  };;
 
   const openPayment_old = async () => {
 
